@@ -12,9 +12,13 @@ class ContactsController < ApplicationController
   def create
     @contact = Contact.new({
       first_name: params[:first_name],
+      middle_name: params[:middle_name],
       last_name: params[:last_name],
       email: params[:email],
-      phone_number: params[:phone_number]
+      phone_number: params[:phone_number],
+      bio: params[:bio],
+      latitude: Geocoder.coordinates(params[:address])[0],
+      longitude: Geocoder.coordinates(params[:address])[1]
       })
     @contact.save
     render "create.html.erb"
@@ -34,9 +38,11 @@ class ContactsController < ApplicationController
     @contact = Contact.find(params[:id])
     @contact.update({
       first_name: params[:first_name],
+      middle_name: params[:middle_name],
       last_name: params[:last_name],
       email: params[:email],
-      phone_number: params[:phone_number]
+      phone_number: params[:phone_number],
+      bio: params[:bio]
       })
     render "update.html.erb"
   end 
