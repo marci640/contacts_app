@@ -1,11 +1,20 @@
 class ContactsController < ApplicationController
 
   def index 
-    @contacts = Contact.all
-    render "index.html.erb"
+    if current_user
+      @contacts = current_user.contacts 
+
+      if params[:filter]
+        @contacts = Group.find_by(category: params[:filter]).contacts.where(user_id: current_user.id)
+        render "index.html.erb"
+      end
+    else 
+      redirect_to "/login"
+    end 
   end
 
   def new
+    @contact = Contact.new
     render "new.html.erb"
   end 
 
@@ -18,10 +27,15 @@ class ContactsController < ApplicationController
       phone_number: params[:phone_number],
       bio: params[:bio],
       latitude: Geocoder.coordinates(params[:address])[0],
-      longitude: Geocoder.coordinates(params[:address])[1]
+      longitude: Geocoder.coordinates(params[:address])[1],
+      user_id: current_user.id
       })
-    @contact.save
-    render "create.html.erb"
+    if @contact.save
+      flash[:success] = "Contact created"
+      redirect_to "/contacts/#{@contact.id}"
+    else
+      render :new
+    end
   end 
 
   def show 

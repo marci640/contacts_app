@@ -6,6 +6,11 @@ Last Name: <p><%= @contact.last_name %></p>
 Email: <p><%= @contact.email %></p>
 Phone Number: <p><%= @contact.japanese_prefix %></p>
 Bio: <p><%= @contact.bio %></p>
+Groups: 
+<% @contact.groups.each do |group| %>
+  <p> <%=group.category%> </p>
+<% end %>
+
 
 <%= form_tag "/contacts/#{@contact.id}", method: :delete do %>
   <input type="submit" value="Delete Contact">

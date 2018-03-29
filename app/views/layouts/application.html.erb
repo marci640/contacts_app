@@ -9,6 +9,38 @@
   </head>
 
   <body>
+
+  <% flash.each do |name, message| %>
+    <div class="alert alert-<%=name%> alert-dismissible fade show" role="alert">
+           <button type="button" class="close" data-dismiss="alert" aria-label="Close"
+               <span aria-hidden="true">&times;</span>
+             </button>
+             <%= message %>
+           </div>
+  <% end %>
+
+  <% if current_user %>
+
+    <li class="nav-item">
+    <% Group.all.each do |group| %>
+      <a class="btn btn-info" href="/contacts?filter=<%=group.category%>" role="button"> <%=group.category%> </a>
+      <%end%>
+    </li>
+
+    <li class="nav-item">
+      <a class="btn btn-info" href="/logout" role="button"> Logout </a>
+    </li>
+
+  <% else %>
+    <li class="nav-item">
+      <a class="btn btn-info" href="/login" role="button">  Login </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="btn btn-info" href="/signup" role="button">  Signup </a>
+    </li> 
+    
+  <%end%>
     <%= yield %>
   </body>
 </html>
